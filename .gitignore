@@ -1,0 +1,5 @@
+.idea/*
+*.user
+Jimbl/bin/*
+Jimbl/obj/*
+Jimbl/LICENSE-MIT
