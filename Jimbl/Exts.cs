@@ -95,6 +95,30 @@ public static class Exts {
 		}
 	}
 	
+	// Integer Extension Methods
+	public static byte   SafeUnsigned(this sbyte value) => (byte)   sbyte.Clamp(value, 0, sbyte.MaxValue);
+	public static UInt16 SafeUnsigned(this Int16 value) => (UInt16) Int16.Clamp(value, 0, Int16.MaxValue);
+	public static UInt32 SafeUnsigned(this Int32 value) => (UInt32) Int32.Clamp(value, 0, Int32.MaxValue);
+	public static UInt64 SafeUnsigned(this Int64 value) => (UInt64) Int64.Clamp(value, 0, Int64.MaxValue);
+	
+	public static sbyte SafeSigned(this byte   value) => value > sbyte.MaxValue ? sbyte.MaxValue : (sbyte) value;
+	public static Int16 SafeSigned(this UInt16 value) => value > Int16.MaxValue ? Int16.MaxValue : (Int16) value;
+	public static Int32 SafeSigned(this UInt32 value) => value > Int32.MaxValue ? Int32.MaxValue : (Int32) value;
+	public static Int64 SafeSigned(this UInt64 value) => value > Int64.MaxValue ? Int64.MaxValue : (Int64) value;
+	
+	public static bool GetBit(this byte v, int b) {
+		return (v & (1 << b)) != 0;
+	}
+	
+	public static void SetBit(this ref byte v, int b, bool value) {
+		if (value) {
+			v |= (byte) (1 << b);
+		}
+		else {
+			v &= (byte) ~(1 << b);
+		}
+	}
+	
 	// Char Extension Methods
 	public static UnicodeCategory GetUnicodeCategory(this char c) => char.GetUnicodeCategory(c);
 	
