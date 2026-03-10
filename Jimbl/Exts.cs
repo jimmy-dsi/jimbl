@@ -122,6 +122,19 @@ public static class Exts {
 		}
 	}
 	
+	public static bool GetBit<T>(this T v, int b) where T: IBinaryInteger<T> {
+		return (v.ToUInt64() & (1uL << b)) != 0;
+	}
+	
+	public static void SetBit<T>(this ref T v, int b, bool value) where T: struct, IBinaryInteger<T> {
+		if (value) {
+			v = (T)(object) (v.ToUInt64() | (1uL << b));
+		}
+		else {
+			v = (T)(object) (v.ToUInt64() & ~(1uL << b));
+		}
+	}
+	
 	// Char Extension Methods
 	public static UnicodeCategory GetUnicodeCategory(this char c) => char.GetUnicodeCategory(c);
 	
@@ -152,6 +165,21 @@ public static class Exts {
 	
 	public static char ToLower(this char c) => char.ToLower(c);
 	public static char ToUpper(this char c) => char.ToUpper(c);
+	
+	public static UInt64 GetFractionBits(this double d) {
+		var allBits = BitConverter.DoubleToUInt64Bits(d);
+		return allBits & 0xF_FFFF_FFFF_FFFF; // Lower 52 bits
+	}
+	
+	public static UInt16 GetExponentBits(this double d) {
+		var allBits = BitConverter.DoubleToUInt64Bits(d);
+		return (UInt16) (allBits >> 52 & 0x7_FF);
+	}
+	
+	public static bool GetSignBit(this double d) {
+		var allBits = BitConverter.DoubleToUInt64Bits(d);
+		return allBits >> 63 != 0;
+	}
 	
 	public static bool IsNumeric(this Type type) {
 		return type.FitsInt32()   || type.FitsUInt32()
